@@ -3,8 +3,9 @@ class IndecisionApp extends React.Component {
         super(props);
         this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
         this.handlePickOption = this.handlePickOption.bind(this);
+        this.handleAddOption = this.handleAddOption.bind(this);
         this.state = {
-            options: ['Thing one', 'Thing two', 'Thing three']
+            options: []
         };
     }
 
@@ -12,6 +13,14 @@ class IndecisionApp extends React.Component {
         const randNum = Math.floor(Math.random() * this.state.options.length);
         const option = this.state.options[randNum];
         alert(option);
+    }
+
+    handleAddOption(option) {
+        this.setState((prevState) => {
+            return {
+                options: prevState.options.concat(option)
+            }
+        });
     }
 
     handleDeleteOptions() {
@@ -37,7 +46,9 @@ class IndecisionApp extends React.Component {
                     options={this.state.options}
                     handleDeleteOptions={this.handleDeleteOptions}
                 />
-                <AddOption />
+                <AddOption
+                    handleAddOption={this.handleAddOption}
+                />
             </div>
         );
     }
@@ -89,13 +100,18 @@ class Option extends React.Component {
 
 class AddOption extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.handleAddOption = this.handleAddOption.bind(this);
+    }
+
     handleAddOption(event) {
         event.preventDefault();
 
-        const option = event.target.elements.option.value;
+        const option = event.target.elements.option.value.trim();
 
         if (option) {
-            alert(option);
+            this.props.handleAddOption(option);
         }
     }
 
